@@ -1,8 +1,4 @@
 
-
-
-// titre d'exemple, un aéroport international au Venezuela accepte
-
 const colors = ["red", "green", "yellow", "blue", "purple", "pink"]
 
 const article = document.querySelector("#article")
@@ -12,9 +8,8 @@ const paragraphs = article.querySelectorAll('p')
 let lastColor = "red";
 
 paragraphs.forEach(paragraph => {
-    // const textPara = paragraph.textContent.replace(/<(?!img|br\s*\/?)[^>]+>/gi, "");
-    const texts = paragraph.textContent.split('. ');
-    
+    const texts = paragraph.innerHTML.split('. ');
+    console
     paragraph.innerHTML = ""
 
     texts.forEach(text => {
@@ -29,6 +24,8 @@ paragraphs.forEach(paragraph => {
         const randomColor = colorsFiltered[Math.floor(Math.random() * colorsFiltered.length)];
         lastColor = randomColor
 
+        console.log(text);
+
         const textClean = text.slice(-1) != "." ? text + ". " : text;
 
         const textSpan = document.createElement('span')
@@ -38,9 +35,4 @@ paragraphs.forEach(paragraph => {
         paragraph.appendChild(textSpan);
 
     });
-
-    // paragraph.innerHTML = textHighlighted
-    // console.log(textHighlighted);
-
-    
 })
