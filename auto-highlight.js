@@ -12,14 +12,12 @@ const paragraphs = article.querySelectorAll('p')
 let lastColor = "red";
 
 paragraphs.forEach(paragraph => {
-    
-    const textPara = paragraph.textContent.replace(/(<([^>]+)>)/gi, "");
-    const texts = textPara.split('. ');
+    // const textPara = paragraph.textContent.replace(/<(?!img|br\s*\/?)[^>]+>/gi, "");
+    const texts = paragraph.textContent.split('. ');
     
     paragraph.innerHTML = ""
 
     texts.forEach(text => {
-        console.log(text);
 
         const colorsFiltered = colors.slice()
         const index = colorsFiltered.indexOf(lastColor);
@@ -30,12 +28,12 @@ paragraphs.forEach(paragraph => {
     
         const randomColor = colorsFiltered[Math.floor(Math.random() * colorsFiltered.length)];
         lastColor = randomColor
-        const textClean = text + ". ";
+
+        const textClean = text.slice(-1) != "." ? text + ". " : text;
 
         const textSpan = document.createElement('span')
         textSpan.style.backgroundColor = randomColor
         textSpan.innerHTML = textClean;
-        console.log(textSpan);
 
         paragraph.appendChild(textSpan);
 
