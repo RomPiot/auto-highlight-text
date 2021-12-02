@@ -1,7 +1,7 @@
 
 
 
-
+// titre d'exemple, un aéroport international au Venezuela accepte
 
 const colors = ["red", "green", "yellow", "blue", "purple", "pink"]
 
@@ -13,18 +13,13 @@ let lastColor = "red";
 
 paragraphs.forEach(paragraph => {
     
-
-    // paragraph.style.backgroundColor = randomColor
-    
     const textPara = paragraph.textContent.replace(/(<([^>]+)>)/gi, "");
-    paragraph.innerHTML = textPara
-
-    const texts = paragraph.textContent.split('. ');
-    // let textHighlighted = ""
-
-    // paragraph.innerHTML = ""
+    const texts = textPara.split('. ');
     
+    paragraph.innerHTML = ""
+
     texts.forEach(text => {
+        console.log(text);
 
         const colorsFiltered = colors.slice()
         const index = colorsFiltered.indexOf(lastColor);
@@ -41,7 +36,7 @@ paragraphs.forEach(paragraph => {
         textSpan.style.backgroundColor = randomColor
         textSpan.innerHTML = textClean;
         console.log(textSpan);
-        // textHighlighted += textSpan;
+
         paragraph.appendChild(textSpan);
 
     });
