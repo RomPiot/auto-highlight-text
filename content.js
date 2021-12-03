@@ -28,11 +28,33 @@ function autoHighLight(selector, contentTag, colors) {
 
         // let texts = paragraph.innerHTML.split(new RegExp(/(<([^>]+)>). /gi));
         // let texts = paragraph.innerHTML.split(new RegExp(/(\.|<br>)/gi));
-        let texts = paragraph.innerHTML.split('. ');
+
+        // TODO : slit per ! br ?
+        let texts = paragraph.innerHTML.split(new RegExp(/(\. |\? |\! )/gi));
+        // console.log(texts);
+        // let texts = paragraph.innerHTML.split('. ');
         paragraph.innerHTML = "";
         let nextColor = "";
+        let cleanText = [];
 
-        texts.forEach(text => {
+        texts.forEach((text) => {
+            const separators = ['. ', '! ', '? '];
+            let addText = true;
+
+            separators.forEach(separator => {
+                if (text == separator) {
+                    cleanText[cleanText.length - 1] = cleanText[cleanText.length - 1] + separator;
+                    addText = false;
+                }
+            });
+
+            addText ? cleanText.push(text) : null;
+        })
+
+
+        cleanText.forEach(text => {
+            console.log(text);
+
             const index = colors.indexOf(lastColor);
 
             if (index >= 0 && index < colors.length - 1) {
@@ -41,15 +63,29 @@ function autoHighLight(selector, contentTag, colors) {
                 nextColor = colors[0]
             }
 
-            text = text.slice(-1) != "." && text.slice(-1) != ":" ? text + ". " : text;
+            // text = text.slice(-1) != "." && text.slice(-1) != ":" ? text + ". " : text;
 
-            const uselessSentence = ['. ', '<br>', '<br/>', '<br />', '.', '<br>. '];
+            // const separators = ['.', '!', '?'];
 
-            uselessSentence.forEach(sentence => {
-                if (sentence == text) {
-                    return;
-                }
-            });
+            // separators.forEach(separator => {
+            //     if (text.slice(-1) != separator) {
+            //         text = text + separator + ' ';
+            //     }
+            // });
+
+            // const uselessSentence = ['. ', '<br>', '<br/>', '<br />', '.', '<br>. ', , '<!-- wp:heading -->. ', '<!-- /wp:heading -->. ', '<!-- wp:paragraph -->. ', '<!-- /wp:paragraph -->. '];
+
+            // uselessSentence.forEach(sentence => {
+            //     console.log(sentence);
+            //     console.log(text);
+
+            //     if (sentence == text) {
+
+
+            //         return;
+            //     }
+            // });
+
 
             const textSpan = document.createElement('span');
             textSpan.style.backgroundColor = nextColor;
