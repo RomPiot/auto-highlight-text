@@ -1,7 +1,7 @@
 
 const form = document.querySelector('form');
 
-load(['selector', 'colors'])
+load(['selector', 'contentTag', 'colors'])
   .then(loadFormData);
 
 form.addEventListener('submit', async (event) => {
@@ -22,10 +22,12 @@ form.addEventListener('input', debounce(saveFormData, 250));
  */
 function loadFormData(data) {
   const selectorInput = form.querySelector('.selector');
+  const contentTagInput = form.querySelector('.content-tag');
   const colorInputs = form.querySelectorAll('.color');
   const flatColors = data.colors.flat();
 
-  selectorInput.value = data.selector
+  selectorInput.value = data.selector ? data.selector : ""
+  contentTagInput.value = data.contentTag ? data.contentTag : ""
 
   colorInputs.forEach((input, index) => {
     input.value = flatColors[index] || '';
@@ -37,6 +39,7 @@ function loadFormData(data) {
  */
 function saveFormData() {
   const selectorInput = form.querySelector('.selector');
+  const contentTagInput = form.querySelector('.content-tag');
   const colorInputs = form.querySelectorAll('.color');
 
   const colors = [...colorInputs].reduce((acc, input, index) => {
@@ -47,8 +50,9 @@ function saveFormData() {
   }, []);
 
   const selector = selectorInput.value
+  const contentTag = contentTagInput.value
 
-  return save({ selector, colors });
+  return save({ selector, contentTag, colors });
 }
 
 /**

@@ -1,21 +1,26 @@
 
 
-chrome.storage.sync.get(['selector', 'colors'], function (data) {
+chrome.storage.sync.get(['selector', 'contentTag', 'colors'], function (data) {
 
     const selector = data.selector;
+    const contentTag = data.contentTag;
     const colors = data.colors;
 
-    autoHighLight(selector, colors);
+    autoHighLight(selector, contentTag, colors);
 });
 
-function autoHighLight(selector, colors) {
+function autoHighLight(selector, contentTag, colors) {
 
     if (!selector) {
         selector = "body";
     }
 
+    if (!contentTag) {
+        contentTag = "p";
+    }
+
     const article = document.querySelector(selector);
-    const paragraphs = article.querySelectorAll('p');
+    const paragraphs = article.querySelectorAll(contentTag);
 
     let lastColor = colors[Math.floor(Math.random() * colors.length)];
 
@@ -36,7 +41,7 @@ function autoHighLight(selector, colors) {
             const randomColor = colorsFiltered[Math.floor(Math.random() * colorsFiltered.length)];
             lastColor = randomColor;
 
-            text = text.slice(-1) != "." ? text + ". " : text;
+            text = text.slice(-1) != "." && text.slice(-1) != ":" ? text + ". " : text;
 
             const textSpan = document.createElement('span');
             textSpan.style.backgroundColor = randomColor;
