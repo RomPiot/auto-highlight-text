@@ -25,20 +25,16 @@ function autoHighLight(selector, contentTag, colors) {
     let lastColor = colors[Math.floor(Math.random() * colors.length)];
 
     paragraphs.forEach(paragraph => {
+        // TODO : ignore a. b. c. 1. 2. 3.
+        let texts = paragraph.innerHTML.split(new RegExp(/(\. |\? |\! |\.\&nbsp\;)/gi));
 
-        // let texts = paragraph.innerHTML.split(new RegExp(/(<([^>]+)>). /gi));
-        // let texts = paragraph.innerHTML.split(new RegExp(/(\.|<br>)/gi));
-
-        // TODO : slit per ! br ?
-        let texts = paragraph.innerHTML.split(new RegExp(/(\. |\? |\! )/gi));
-        // console.log(texts);
-        // let texts = paragraph.innerHTML.split('. ');
         paragraph.innerHTML = "";
         let nextColor = "";
         let cleanText = [];
 
         texts.forEach((text) => {
-            const separators = ['. ', '! ', '? '];
+            // console.log(text);
+            const separators = ['. ', '! ', '? ', ' ', '&nbsp;', '.&nbsp;', ''];
             let addText = true;
 
             separators.forEach(separator => {
@@ -53,7 +49,7 @@ function autoHighLight(selector, contentTag, colors) {
 
 
         cleanText.forEach(text => {
-            console.log(text);
+            // console.log(text);
 
             const index = colors.indexOf(lastColor);
 
@@ -62,30 +58,6 @@ function autoHighLight(selector, contentTag, colors) {
             } else {
                 nextColor = colors[0]
             }
-
-            // text = text.slice(-1) != "." && text.slice(-1) != ":" ? text + ". " : text;
-
-            // const separators = ['.', '!', '?'];
-
-            // separators.forEach(separator => {
-            //     if (text.slice(-1) != separator) {
-            //         text = text + separator + ' ';
-            //     }
-            // });
-
-            // const uselessSentence = ['. ', '<br>', '<br/>', '<br />', '.', '<br>. ', , '<!-- wp:heading -->. ', '<!-- /wp:heading -->. ', '<!-- wp:paragraph -->. ', '<!-- /wp:paragraph -->. '];
-
-            // uselessSentence.forEach(sentence => {
-            //     console.log(sentence);
-            //     console.log(text);
-
-            //     if (sentence == text) {
-
-
-            //         return;
-            //     }
-            // });
-
 
             const textSpan = document.createElement('span');
             textSpan.style.backgroundColor = nextColor;
