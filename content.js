@@ -13,8 +13,21 @@ chrome.storage.sync.get(['patterns'], function (data) {
     autoHighLight(selector, colors);
 });
 
+
+// let actived = 0;
+// let initialContent = "";
+
 function autoHighLight(selector, colors) {
+
     const article = document.querySelector(selector);
+    // console.log(article.innerHTML);
+    // initialContent = article.textContent;
+
+    // if (!actived) {
+
+    // } else {
+    //     article.
+    // }
     const paragraphs = article.querySelectorAll('p');
 
     let lastColor = colors[Math.floor(Math.random() * colors.length)];
