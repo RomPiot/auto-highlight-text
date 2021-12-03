@@ -29,7 +29,7 @@ function autoHighLight(selector, contentTag, colors) {
         let texts = paragraph.innerHTML.split(new RegExp(/(\. |\? |\! |\.\&nbsp\;)/gi));
 
         paragraph.innerHTML = "";
-        let nextColor = "";
+        let color = "";
         let cleanText = [];
 
         texts.forEach((text) => {
@@ -54,19 +54,38 @@ function autoHighLight(selector, contentTag, colors) {
             const index = colors.indexOf(lastColor);
 
             if (index >= 0 && index < colors.length - 1) {
-                nextColor = colors[index + 1]
+                color = colors[index + 1]
             } else {
-                nextColor = colors[0]
+                color = colors[0]
             }
 
             const textSpan = document.createElement('span');
-            textSpan.style.backgroundColor = nextColor;
+            textSpan.classList.add('text-colored');
+            textSpan.setAttribute('color', color);
+            textSpan.setAttribute('colored', "1");
+            textSpan.style.backgroundColor = color;
             textSpan.innerHTML = text;
-
             paragraph.appendChild(textSpan);
-
-            lastColor = nextColor;
-
+            lastColor = color;
         });
     })
+
+    const textColored = document.querySelectorAll('.text-colored');
+
+    textColored.forEach(text => {
+        text.addEventListener("click", () => {
+            const color = text.getAttribute('color');
+            const colored = text.getAttribute('colored');
+
+            if (colored == "1") {
+                text.style.backgroundColor = "transparent";
+                text.setAttribute('colored', "0");
+            } else {
+                text.style.backgroundColor = color;
+                text.setAttribute('colored', "1");
+            }
+
+        });
+    });
+
 };

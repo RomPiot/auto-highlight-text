@@ -31,5 +31,10 @@
     "highlight-text": {
       "description": "Replace text on the current page."
     }
-  }
+  },
+  "content_scripts": [
+    {
+        "matches": ["<all_urls>"],
+        "css": ["content.css"]
+    }]
 }
