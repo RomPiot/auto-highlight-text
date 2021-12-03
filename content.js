@@ -27,27 +27,38 @@ function autoHighLight(selector, contentTag, colors) {
     paragraphs.forEach(paragraph => {
 
         // let texts = paragraph.innerHTML.split(new RegExp(/(<([^>]+)>). /gi));
+        // let texts = paragraph.innerHTML.split(new RegExp(/(\.|<br>)/gi));
         let texts = paragraph.innerHTML.split('. ');
         paragraph.innerHTML = "";
+        let nextColor = "";
 
         texts.forEach(text => {
-            const colorsFiltered = colors.slice();
-            const index = colorsFiltered.indexOf(lastColor);
+            const index = colors.indexOf(lastColor);
 
-            if (index > -1) {
-                colorsFiltered.splice(index, 1);
+            if (index >= 0 && index < colors.length - 1) {
+                nextColor = colors[index + 1]
+            } else {
+                nextColor = colors[0]
             }
-
-            const randomColor = colorsFiltered[Math.floor(Math.random() * colorsFiltered.length)];
-            lastColor = randomColor;
 
             text = text.slice(-1) != "." && text.slice(-1) != ":" ? text + ". " : text;
 
+            const uselessSentence = ['. ', '<br>', '<br/>', '<br />', '.', '<br>. '];
+
+            uselessSentence.forEach(sentence => {
+                if (sentence == text) {
+                    return;
+                }
+            });
+
             const textSpan = document.createElement('span');
-            textSpan.style.backgroundColor = randomColor;
+            textSpan.style.backgroundColor = nextColor;
             textSpan.innerHTML = text;
 
             paragraph.appendChild(textSpan);
+
+            lastColor = nextColor;
+
         });
     })
 };
