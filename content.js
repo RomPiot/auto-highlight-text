@@ -1,33 +1,20 @@
 
 
-chrome.storage.sync.get(['patterns'], function (data) {
+chrome.storage.sync.get(['selector', 'colors'], function (data) {
 
-    const selector = data.patterns[0];
-    const colors = data.patterns;
-    const index = colors.indexOf(selector);
-
-    if (index > -1) {
-        colors.splice(index, 1);
-    }
+    const selector = data.selector;
+    const colors = data.colors;
 
     autoHighLight(selector, colors);
 });
 
-
-// let actived = 0;
-// let initialContent = "";
-
 function autoHighLight(selector, colors) {
 
+    if (!selector) {
+        selector = "body";
+    }
+
     const article = document.querySelector(selector);
-    // console.log(article.innerHTML);
-    // initialContent = article.textContent;
-
-    // if (!actived) {
-
-    // } else {
-    //     article.
-    // }
     const paragraphs = article.querySelectorAll('p');
 
     let lastColor = colors[Math.floor(Math.random() * colors.length)];
@@ -58,5 +45,4 @@ function autoHighLight(selector, colors) {
             paragraph.appendChild(textSpan);
         });
     })
-
 };

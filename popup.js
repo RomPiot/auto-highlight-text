@@ -1,8 +1,7 @@
 
 const form = document.querySelector('form');
 
-load(['patterns'])
-  .then(data => data.patterns)
+load(['selector', 'colors'])
   .then(loadFormData);
 
 form.addEventListener('submit', async (event) => {
@@ -11,7 +10,7 @@ form.addEventListener('submit', async (event) => {
 
   let currentTab = await getCurrentTab();
   chrome.scripting.executeScript({
-    target: {tabId: currentTab.id},
+    target: { tabId: currentTab.id },
     files: ['content.js']
   });
 });
@@ -21,12 +20,15 @@ form.addEventListener('input', debounce(saveFormData, 250));
 /**
  * Populate the form with values from persistent storage.
  */
-function loadFormData(patterns) {
-  const inputs = form.querySelectorAll('input');
-  const flatPatterns = patterns.flat();
+function loadFormData(data) {
+  const selectorInput = form.querySelector('.selector');
+  const colorInputs = form.querySelectorAll('.color');
+  const flatColors = data.colors.flat();
 
-  inputs.forEach((input, index) => {
-    input.value = flatPatterns[index] || '';
+  selectorInput.value = data.selector
+
+  colorInputs.forEach((input, index) => {
+    input.value = flatColors[index] || '';
   });
 }
 
@@ -34,16 +36,19 @@ function loadFormData(patterns) {
  * Write the form values to persistent storage.
  */
 function saveFormData() {
-  const inputs = form.querySelectorAll('.form--input');
+  const selectorInput = form.querySelector('.selector');
+  const colorInputs = form.querySelectorAll('.color');
 
-  const patterns = [...inputs].reduce((acc, input, index) => {
+  const colors = [...colorInputs].reduce((acc, input, index) => {
 
     acc.push(input.value);
 
     return acc;
   }, []);
 
-  return save({patterns});
+  const selector = selectorInput.value
+
+  return save({ selector, colors });
 }
 
 /**
